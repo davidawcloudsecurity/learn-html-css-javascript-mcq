@@ -6,7 +6,7 @@ body {
 }
 
 .quiz-container {
-    max-width: 800px;
+    max-width: 80%;
     margin: 50px auto;
     padding: 20px;
     background: #fff;
@@ -17,10 +17,12 @@ body {
 .question {
     margin-bottom: 20px;
     font-weight: bold;
+    font-size: 22px; /* Adjust this size as needed */
 }
 
 .answers {
     margin-bottom: 20px;
+    font-size: 22px; /* Adjust this size as needed */
 }
 
 .answers div {
@@ -42,5 +44,5 @@ button:hover {
 
 #results {
     margin-top: 20px;
-    font-size: 18px;
+    font-size: 22px; /* Adjust this size as needed */
 }
