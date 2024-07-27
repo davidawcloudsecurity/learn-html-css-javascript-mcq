@@ -61,11 +61,13 @@ function buildQuiz() {
         const answers = [];
         for (letter in currentQuestion.answers) {
             answers.push(
-                `<label>
-                    <input type="radio" name="question${questionNumber}" value="${letter}">
-                    ${letter} :
-                    ${currentQuestion.answers[letter]}
-                </label>`
+                `<div>
+                    <label>
+                        <input type="radio" name="question${questionNumber}" value="${letter}">
+                        ${letter} :
+                        ${currentQuestion.answers[letter]}
+                    </label>
+                </div>`
             );
         }
         output.push(
