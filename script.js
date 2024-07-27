@@ -64,18 +64,42 @@ function buildQuiz() {
                 `<div>
                     <label>
                         <input type="radio" name="question${questionNumber}" value="${letter}">
-                        ${letter} :
-                        ${currentQuestion.answers[letter]}
+                        ${letter} : ${currentQuestion.answers[letter]}
                     </label>
                 </div>`
             );
         }
         output.push(
-            `<div class="question"> ${currentQuestion.question} </div>
-            <div class="answers"> ${answers.join('')} </div>`
+            `<div class="question">
+                ${currentQuestion.question}
+            </div>
+            <div class="answers">
+                ${answers.join('')}
+            </div>
+            <button class="reveal-answer" data-question="${questionNumber}">Reveal Answer</button>`
         );
     });
     quizContainer.innerHTML = output.join('');
+    addRevealAnswerListeners();
+}
+
+function addRevealAnswerListeners() {
+    document.querySelectorAll('.reveal-answer').forEach(button => {
+        button.addEventListener('click', function() {
+            const questionNumber = this.getAttribute('data-question');
+            const correctAnswer = quizQuestions[questionNumber].correctAnswer;
+            const answerContainers = quizContainer.querySelectorAll('.answers')[questionNumber];
+            const labels = answerContainers.querySelectorAll('label');
+            
+            labels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.style.color = 'lightgreen';
+                } else {
+                    label.style.color = 'red';
+                }
+            });
+        });
+    });
 }
 
 function showResults() {
@@ -87,14 +111,12 @@ function showResults() {
         const userAnswer = (answerContainer.querySelector(selector) || {}).value;
         if (userAnswer === currentQuestion.correctAnswer) {
             numCorrect++;
-            answerContainers[questionNumber].style.color = 'lightgreen';
+            answerContainer.style.color = 'lightgreen';
         } else {
-            answerContainers[questionNumber].style.color = 'red';
+            answerContainer.style.color = 'red';
         }
     });
     resultsContainer.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
 }
 
 buildQuiz();
-
-submitButton.addEventListener('click', showResults);
