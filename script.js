@@ -11,7 +11,8 @@ const quizQuestions = [
             c: "Create a target group. Add the EKS managed node group's Auto Scaling group as a target Create an Application Load Balancer with an HTTPS listener on port 443 to forward traffic to the target group.",
             d: "Create a target group. Add the EKS managed node group’s Auto Scaling group as a target. Create a Network Load Balancer with a TLS listener on port 443 to forward traffic to the target group."
         },
-        correctAnswer: "a"
+        correctAnswer: "a",
+        explanation: "The correct answer is 'a' because the AWS Load Balancer Controller supports TCP/UDP traffic, which is required for mutual TLS and gRPC."
     },
     {
         question: "2. A company is deploying a new application in the AWS Cloud. The company wants a highly available web server that will sit behind an Elastic Load Balancer. The load balancer will route requests to multiple target groups based on the URL in the request. All traffic must use HTTPS. TLS processing must be offloaded to the load balancer. The web server must know the user’s IP address so that the company can keep accurate logs for security purposes.\nWhich solution will meet these requirements?",
@@ -108,18 +109,31 @@ function addRevealAnswerListeners() {
 function showResults() {
     const answerContainers = quizContainer.querySelectorAll('.answers');
     let numCorrect = 0;
+
     quizQuestions.forEach((currentQuestion, questionNumber) => {
         const answerContainer = answerContainers[questionNumber];
         const selector = `input[name=question${questionNumber}]:checked`;
         const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
         if (userAnswer === currentQuestion.correctAnswer) {
             numCorrect++;
             answerContainer.style.color = 'lightgreen';
         } else {
             answerContainer.style.color = 'red';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'explanation';
+            explanationDiv.textContent = currentQuestion.explanation;
+            
+            // Check if explanation already exists before adding
+            if (!answerContainer.querySelector('.explanation')) {
+                answerContainer.appendChild(explanationDiv);
+            }
         }
     });
+
     resultsContainer.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
 }
 
 buildQuiz();
+
+submitButton.addEventListener('click', showResults);
