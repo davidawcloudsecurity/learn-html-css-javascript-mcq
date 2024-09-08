@@ -98,6 +98,9 @@ function addRevealAnswerListeners() {
                     label.style.color = 'red';
                 }
             });
+            
+            // Disable the button after it's clicked
+            this.disabled = true;
         });
     });
 }
